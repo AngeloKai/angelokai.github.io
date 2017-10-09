@@ -1,0 +1,439 @@
+<pre class='metadata'>
+Title: Base Machine Learning API: Use Cases and Requirements
+Shortname: base-machine-learning-1
+Level: 1
+Status: DREAM
+URL: https://angelokai.github.io/WebML/index.html
+Editor: Angelo Liao, w3cid 94342, Microsoft, huliao@microsoft.com
+Abstract: This explainer describes the motivation for creating a new set of APIs designed to 
+    accelerate machine learning operations in web applications. Based on the motivations, it 
+    sketches out a set of requirements for designing the APIs. The APIs should remain generic
+    and baisc enough to support a broad range of machine learning functionalities. For example, 
+    providing an API for fast matrix multiplication for sparse matrix accelerates performance 
+    for a wide variety of machine learning operations. 
+Markup Shorthands: markdown yes
+</pre>
+
+# Status of this document # {#status}
+
+This is a **really unofficial** draft. It’s not meant to capture any consensus, beyond 
+my own personal feelings about what sounds interesting. It is provided for discussion only and may 
+change at any moment, and should not be taken as "official" or even "unofficial, but planned". Its 
+publication here does not imply endorsement of its contents by W3C or by Microsoft. Don’t cite this 
+document other than as a collection of interesting ideas.
+
+# Introduction # {#intro}
+
+Machine Learning (ML) algorithms have been significantly improved in terms of accuracy, reliability, 
+and performance in recent years. While typically thought of a technology for the cloud, machine 
+learning have its applications on the device as well. Developing a machine learning model usually 
+involves two stages: training and inference. In the first stage, the developer decides
+on a skeleton model and feed large dataset to the model in repeated iterations to *train* the model. 
+Then the model would then be ported to production environment to *infer* insights based on real 
+time incoming data. While training is typically performed on the cloud, Inference can occur in the 
+cloud or on the device. Performing inference on the device have many desirable properties including performance 
+boost due to <a href="https://en.wikipedia.org/wiki/Edge_computing">edge computing</a>, resistance 
+toward poor or no network, and security/privacy protection, etc.
+
+Although platforms for native applications have all shipped APIs to support machine learning 
+inference on device, similiar functionalities have been missing on the web platform. Supporting 
+such functionalities can not only supercharge existing applications but 
+also unlock new scenarios. For example, with the help of service worker, developers can have their 
+text translation application to be available offline. By inferring the user's emotions based on
+user's input (be it text, image, or video), developers can build a rich emotional experience. 
+Applications on new frontiers such as Mixed Reaility can become much "smarter."
+
+Today when web developers want to develop machine learning models, 
+they face bottlenecks in terms of memory, performance, and power consumptions. Although 
+various existing APIs ease the pain a little, a new set of APIs are necessary for unlocking ML 
+on the web. 
+
+The explainer describes the use cases and developer interests that motivate the API, examines 
+existing platform support, demonstrats a few known techniques to break the performance bottlenecks,
+and sketches out a initial set of requirements for the final API design. It is important to note 
+that machine learning is a broad field. The explainer focuses on some areas (such as neural 
+network) I found particularly
+interesting but there are other areas that haven't been mentioned yet. The explainer is written to
+spark conversations about ML on the web and additions/corrections are welcomes. 
+
+# Terminology # {#terminology}
+
+: <dfn>machine learning</dfn>
+:: A field of study that gives computers the ability to learn without explicitly programmed, 
+    according to the Arthur Samuel who coined the term in 1959. This is in constrat with 
+    purpose-built software programs that has its behavior logic explicitly defined by 
+    developers. 
+
+: <dfn>neural networks</dfn>
+:: A set of machine learning algorithms that take inspiration from the way brains operate. It is
+    generally believed that the main computational unit of the brain is the neurons and network
+    of neurons enable brains to "compute."
+
+: <dfn>deep neural networks</dfn>
+: <dfn>DNNs</dfn>
+:: A subset of neural network algorithms that use multiple layers of neural network. The use of 
+    DNNs is behind several recent big breakthroughs in mahcine learning. 
+
+: <dfn>training</dfn>
+: <dfn>train</dfn>
+:: Typically the first stage during development machine learning models. Developing machine 
+    learning applications typically involve two stages: training and inference. 
+    Training the network
+    or model involves processing the data, feeding the data to determine the appropriate
+    values in the network, and determine if the accuracy of the model is sufficient. Once 
+    trained, the model should be considered sufficiently accurate for it pre-determined 
+    purpose. Because training usually involves a very large dataset and many rounds of
+    iterations, developers generally train the network on the cloud or machines with high 
+    computing power. 
+
+: <dfn>inference</dfn>
+: <dfn>infer</dfn>
+:: Typically the second stage during development machine learning models. Developing machine 
+    learning applications typically involve two stages: training and inference. At 
+    this stage, developers optimize their machine learning models for production environment. 
+    Depending on the scenarios, 
+    developers may accept a small drop of accuracy for the sake of speed or size. 
+
+: <dfn>incremental learning</dfn>
+:: A possible follow-up stage after the developer developed the initial model. Developers 
+    can use the incremental learning technique to improve the existing model. 
+
+: <dfn>transfer learning</dfn>
+:: Developers can use a technique called transfer learning to use learning from one model to 
+    develop another model. For example, a model trained to recognize animals can be used to 
+    recognize dogs. 
+
+# Status Quo # {#status-quo}
+
+## Native Platforms ## {#native-platform}
+
+All native application platforms have shippped APIs to support machine
+learning and/or neural networks. For example, iOS and MacOS shipped 
+<a href="https://developer.apple.com/documentation/accelerate/bnns">Basic Neural Network
+Subroutines (BNNS)</a> and updated 
+<a href="https://developer.apple.com/documentation/accelerate">Accelerate Framework</a>
+for <a href="https://developer.apple.com/documentation/coreml">Core ML</a>. The 
+<a href="https://docs.microsoft.com/en-us/windows/uwp/get-started/universal-application-platform-guide">
+Universal Windows Platform (UWP)</a> has added 
+<a href="https://docs.microsoft.com/en-us/cognitive-toolkit/CNTK-Library-Evaluation-on-UWP">support</a> 
+for CNTK. Android is also said to release a Deep Neural Network API soon.
+
+Platform and developers have also built extensive framework on top of these APIs for mobile 
+scenarios. Examples include Facebook's 
+<a href=
+"https://code.facebook.com/posts/196146247499076/delivering-real-time-ai-in-the-palm-of-your-hand/">
+Caffe2go</a>, Google’s <a href="https://www.tensorflow.org/mobile/">TensorFlow Lite</a>, Apple’s 
+<a href="https://developer.apple.com/documentation/coreml">CoreML Framework</a>, and  
+<a href="https://docs.microsoft.com/en-us/cognitive-toolkit/CNTK-Library-Evaluation-on-UWP">CNTK's 
+support for UWP</a>.
+
+## Web Developer Interests ## {#web-developer-interest}
+
+The web development community has shown strong interest in machine learning by creating 
+libraries or frameworks to simplify neural network development. 
+For example, Andrej Karpathy developed the 
+<a href="https://github.com/karpathy/convnetjs">ConvNetJS</a> library, which can be used to build 
+convolutional networks, deep neural networks etc. Another example is the 
+<a href="https://github.com/cazala/synaptic">Synaptic.js</a> library, which implements a recurrent 
+neural network architecture. For a comprehensive look at existing libraries, click 
+<a href="https://github.com/AngeloKai/js-ml-libraries">here</a>. 
+
+Although the above libraries cover many use cases already, they do suffer from performance/memory 
+bottlenecks problems. The <a href="https://github.com/transcranial/keras-js">keras.js</a> library 
+sought to address the problem by using WebGL in a clever way. Because WebGL can compute data 
+directly in GPU memory, the performance does show significant improvement in lab settings. However, 
+because WebGL cannot be accessed by WebWorkers, it can be difficult for production sites to adopt. 
+More limitations on WebGL will be discussed in the section below. 
+
+# Use Cases # {#use-cases}
+
+Developers may use machine learning for a variety of purposes. Drawing inspirations from existing 
+demos and production sites/apps, this section 
+illustrates a few sample use cases. As mentioned above, this document is meant to inspire 
+discussions in this space among browser vendors and the web development community.
+
+## Offline Recommendation Engine ## {#offline-recommendation}
+
+A web application built with Service Work to be network resistant may wish to build its 
+recommendation engine offline. For example, a site serving images/GIFs/video as content may 
+wish to serve users smart content feed with content cached with Service Worker. Or a productivity
+application with many different features like Office may wish to provide 
+<a href="https://support.office.com/en-us/article/Where-is-the-product-Help-in-Office-2016-199950c6-1260-44fe-ba2e-e95968d05397">Help</a> when user is 
+for users looking to know which feature when the user is offline or traveling with poor network. 
+
+## Text Translation ## {#text-translation}
+
+A web application may wish to translate text from one language to another offline. 
+The Google Translate service trained a machine learning model to translate between languages 
+and ported the model to its mobile app. The mobile app can be used offline, though translation
+may be better online. 
+
+## Object Detection from Images/Videos ## {#object-detection}
+
+A web application may wish to recognize objects from images or videos. For example, 
+<a href="https://en.wikipedia.org/wiki/Baidu">Baidu</a> built
+convolutional neural networks (CNNs) into its mobile app so that the app can detect the main 
+object
+in the live camera feed and search related merchandise based on the result
+(<a href="https://github.com/baidu/mobile-deep-learning">baidu deep learning framework</a>). 
+
+In addition to generic object recognition, an application may wish to train their model to 
+focus on a few classes of objects for the sake of more specific classification. For example, 
+an application may want to let users give their credit card number with live camera feed. 
+A generic text detection model may be a lot less accurate than a specific model trained with 
+only credit card numbers. Or a web application for streaming/uploading videos may wish to p
+erform live check of 
+the camera feed to ensure the user isn't showing obscene content for law compliance purpose. 
+Or a web application may allow users to diagnose whether they likely have skin cancers themselves 
+with live camera feed 
+(<a href="http://www.nature.com/nature/journal/v542/n7639/full/nature21056.html?foxtrotcallback=true">Esteve et al, 2017</a>). 
+
+An application may also wish to let the front-end code to do identification and leave the 
+task of classification to the back-end. Object detection usually consists of two stages: 
+identification and classification. The detection model first *identifies* the objects in an image
+and then *classifies* the objects to know whether the object is an animal. For example, in the above
+skin cancer recognition example, the application may wish to let the front-end code to identify 
+the mole and leave the task of classifying whether there's cancer to the back-end. 
+
+## Risk Analysis ## {#risk-analysis}
+
+A web application may wish to deploy a small scale risk analysis model to determine whether the
+transaction should be pre-approved and leave the final decision to the full-scale risk models on
+the backend. Quick pre-approval improves user experience while reduce cost for running the model. 
+
+## Rich Interactive Experience ## {#emotional-experience}
+
+A web application may wish to detect user's emotion based on user input and dynamically change 
+the interaction model. For example, a social media site may wish to detect user's emotion when
+user's typing the post and recommend the right emoji to use. If the user wishes to post picture
+alongside the post, the application can also recommend appropriately based on the post. 
+
+## Mixed Reality Experience ## {#mixed-reality}
+
+A web application built for mixed reality platforms may wish to leverage machine learning to 
+anticipate user intention and movement in order to cleverly render content.
+
+# Requirements # {#bottlenecks}
+
+## Challenges ## {##challenges}
+
+Performing machine learning inference on the web faces challenges in several areas: file size, 
+memory, performance, and power consumtion. First, machine learning models typically have a large 
+file size. The streamlined mobile version of TensorFlow by itself can take around 10 megabytes. 
+A full model would add at least about 10 megabytes. Second, ML programs, 
+especially deep neural networks, often instantiates many matrices 
+throughout the computation cycle and may exceed 
+max memory limit. Third, as illustrated below, the current web platform has poor support for 
+the typical kind of mathmatical computation that machine learning programs use. Finally,
+today if a model were to be run inside a web application, it can suck up significant power. 
+
+# Requirements # {#requirements}
+
+Therefore the web platform should offer APIs that aim at the below goals:
+
+1. Provide APIs that are generic and basic enough to cover large range of machine learning 
+    algorithms including deep neural networks, decision-trees, etc.
+1. Optimize toward small file size and memory consumption. 
+1. Make of use of possible hardware acceleration, such as the use of
+    ASICs/GPUs/CPUs/DSPs, and parallelization to maximize performance gain. 
+1. Balance between hardware acceleration and the level of abstraction needed for the web platform. 
+1. Designed with focus on inference instead of training, such as a easy way to port trained models
+    into inference-ready models.
+
+# Related Research # {#related-research}
+
+The design of an appropriate API surface for machine learning inference should incorporate 
+learnings from research about optimizing machine learning models to run on devices with 
+low computational power such as IoT devices. The section covers a few sample 
+techniques for inspiration purpose: quantization, huffman coding, discretization, and sparse 
+matrix. 
+
+A common theme among the techniques is they are all trade-offs between accuracy and other 
+qualities. 
+
+## Quantization ## {#quantization}
+
+Quantization refers to a group of techniques ot convert high precision floating point numbers 
+typically used in the training phase to low precision compact format numbers. Doing so allows 
+us to reduce the file size and accelerate the computation. This technique is particularly 
+useful for DNNs. 
+
+During the training stage, programs typically compute in high precision floating point numbers. 
+That is because the biggest challenge in training is to get the models to work and floating 
+number is best at preserving accuracy. After all tasks like training neural network is 
+essentially keep tweaking the weights of the network until a satifatory result is obtained. 
+Plus developers usually have access to lot of GPUs
+during training and GPUs work very well with floating point numbers. Doing so would allow 
+training to run a lot faster so to not waste development time. 
+
+During the inference, the main challenge becomes the shrinking the file size. As it turns out, 
+converting 32 bit numbers into 8 bit numbers shrinks the file size and memory throughput 
+by four times. The same goes for caches and SIMD instructions. Because 
+many machine learning algorithms are now well-equipped to handle statistical noise, reducing 
+precision often doesn't lead to too much decrease in accuracy. Although low precision may not
+matter that much for GPUs, it can matter a lot for DSPs which are usually designed to operate 
+with 8 bit numbers. Nowadays most computers including smartphones come with DSPs. 
+
+## Huffman Coding ## {#huffman-coding}
+
+Huffman coding is a commonly used compression alogrithm that uses variable-length codeward to 
+encode symbols. Studies suggest Huffman coding can usually shrink network file size by about 
+20% to 30%. The technique can be used after quantization to reduce size. 
+
+## Discretization ## {#Discretization}
+
+Discretization is the process to transfer continious functions to to discrete numbers. Some 
+may argue quantization is part of discretization. One thing to call out about this technique 
+is that this really helps decrease power consumption. 
+
+## Sparse Matrix ## {#sparse-matrix}
+
+Most machine learning problems don't involve a densely populated matrix. Adopting sparse matrix
+data structures and specifical numerical methods for those data structures can significantly 
+reduce the size of the memory. 
+
+
+
+# Existing Standard APIs # {#related-standards}
+
+Today several standard APIs do exist to help developers make use of machine learning tehcnologies
+in their web applications. For example, the Web Speech API lets developers use speech-to-text 
+bidirectional conversion technology. The WebGL API gives developers a path to 
+leverage GPU in matrix computation, though the path is not straight forward as one may hope. 
+The same goes for the WebGPU API proposal put forth by WebKit earlier this year. 
+The Web Assembly API lets developers transpile their
+existing trained networks written in C++ to binaries that can be run on the browser.
+
+However, none of the existing standards was created with supporting machine learning on the web 
+in mind and therefore does not provide sufficent support machine learning
+on the platform. Although each of them helps with one subset of the problems, a generic solution
+is needed. 
+
+## APIs Built on Pre-Trained Model ## {#pretrained-apis}
+
+In the past few years, we have added support for a few new APIs that relies on machine learning 
+technologies. The <a href="https://dvcs.w3.org/hg/speech-api/raw-file/tip/webspeechapi.html">Web
+Speech API</a> enables developers to easily convert text content to speech and speech content to 
+text. Both features are possible because of advancements we made in the natural language 
+processing field, a sub-field of machine learning. The 
+<a href="https://w3c.github.io/webauthn/">Web Authentication API</a> enables web developers to 
+authenticate users with strong authenticators, such as fingerprint scanners, facial recognition
+systems etc. Biometric authenticators all employ machine learning technologies one way or another. 
+The <a href="https://github.com/WICG/shape-detection-api">Shape Detection API</a>, a recent
+addition to the <a href="https://www.w3.org/community/wicg/">Web Incubator CG</a>, allow developers
+to detect faces, barcodes, and text in live or still images. Object detection technologies are 
+often based on research in machine learning, which in turn furthered research in 
+<a href="https://en.wikipedia.org/wiki/Image_processor">Image Signal Processors (ISPs)</a>. 
+
+One of the common motivations behind building the above APIs are the machine models are 
+computationaly expensive. Yet it is unscalable to continue adding APIs to the platform for the 
+reason of computational cost. There should be a generic solution that can bring down the 
+computational cost of doing machine learning on the web platform. 
+
+## WebGL ## {#webgl}
+
+The WebGL API was designed to render 3D and 2D graphic content and make use of GPUs behind the 
+scene when necessary. Given that most of graphic processing relies on matrix computation, 
+web developers have developed libraries that wrap around WebGL to accelerate matrix computation. 
+However, as I illustrate below, such libraries are not developer-friendly and often very taxing 
+on memory. 
+Take the example of <a href="https://github.com/waylonflinn/weblas/blob/master/index.js#L59">this 
+matrix multiplication method</a>. The method has to first instantiates two RGBA texel array,
+tranpose one of the arrays, create 2 input textures and 1 output texture, activate the shader, 
+bind input texture, set shader parameters, bind output texture, and finally call drawElements to 
+calculate the matrix. After the calculation, it also has to unbind all the textures. A simple 
+matrix multiplication should only need to instantiate one new matrix in memory instead of five (
+two arrays and three textures). 
+
+Although next generation of WebGL API can include more support for direct mathmatical computation, 
+one can argue that this goal is not within the charter of an API that is designed for drawing 
+graphics. In addition, the next WebGL (WebGL 3.00 are still far away given that Chrome and Firefox
+has just implemented the support for the 2.0 version earlier this year. 
+
+## Web Assembly ## {#web-assembly}
+
+WebAssembly is a new low-level assembly-like language with a compact binary format and near-native
+performance. Programs written in C/C++ can be compiled directly to this format to run on the web. 
+On the browsers, WebAssembly programs run in a sandbox that can be used alongside JavaScript. 
+
+As previously stated, systemic support for Machine Learning programs should aim for allowing 
+programs to have the least memory needed, provide most performance support, and preferably ease
+developer pain in importing their trained model to the web. Mainstream machine learning frameworks
+usually can produce models in C++ format. Given the above three goals, WebAssembly seems like 
+a fitting solution for ML. 
+
+However, the current WebAseembly design do have a few shortcomings when it comes to being applied 
+to ML. First of all, WebAseembly does not have GPU support, a well-known performance accelerator 
+for ML. Second, WebAssembly lacks support for running in WebWorkers. Because ML models can take up to
+several hundred megabytes and unpredictable, developers should be discouraged from running the models 
+in the UI thread. Third, Bottlenecks brought by network conditions are often motivations behind
+doing ML computation on the client. Common matrix functions can be large in size. 
+Because WebAssembly is running on a blank slate, the developers have to load related libraries 
+by themselves. If the libraries are built into the platform, much less speed requirement is needed. 
+For example, developers would have to define their own matrix/format data type. 
+
+## WebGPU ## {#web-gpu}
+
+WebGPU API is a new incubating API that aims at exposing modern GPU features. Its initial API set
+is a derivation from the Metal language. Prototype for the API has landed in WebKit. 
+
+Although the API aims at exposing low-level GPU functionalities, its 
+<a href="https://webkit.org/wp-content/uploads/webgpu-api-proposal.html">initial API set is 
+primarily geared toward graphics rendering and not direct mathmatical computation. Research has 
+also shown that while GPU accelerates computing, chips can be designed in ways that make them much 
+better at machine learning computing. For example, 
+<a href="https://en.wikipedia.org/wiki/Quantization_(signal_processing)">quantization</a>, a 
+common technique to shrink number to less-than-32-bit representation, has proven to be a 
+efficient technique to reduce the size of programs. Companies have produced chips designed
+for machine learning for personal devices instead of using GPUs, such as 
+<a href="https://www.movidius.com/technology">Movidius' (an Intel company) Myriad VPU</a>, the 
+<a href="https://www.ibm.com/blogs/research/2016/09/deep-learning-possible-embedded-systems-thanks-truenorth/">
+IBM's TrueNorth chips</a>, or <a href="https://www.intelnervana.com/technology/">Intel's 
+Nervana</a>If the aim of the WebGPU API is to expose interface for the modern GPU, 
+it would not be suitable for the machine learning field. 
+
+# Strawman Proposal # {#strawman}
+
+The section includes a strawman proposal of API surface as the beginning point of the 
+conversation. 
+
+<xmp class="idl">
+    [Exposed=Windows, SecureContext]
+    interface Matrix {
+        readonly attribute ArrayBuffer rawMatrix; 
+        readonly attribute unsigned long height;
+        readonly attribute unsigned long width;
+        readonly attribute boolean isTransposed;
+        readonly attribute boolean isVector;
+        readonly attribute int bitSize; // Represent which numerical representation is used
+
+        Promise <Matrix> fromJSON (String str);
+        Promise <Matrix> fromArray (ArrayBuffer buf);
+
+        Promise <Matrix> multiply (Matrix a, Matrix b); // Multiply two matrices 
+        Promise <Matrix> div (Matrix a, Matrix b); // Return matrix of element-wise division
+        Promise <Matrix> mod (Matrix a, Matrix b); // Return element-wise remainder of division
+        Promise <Matrix> sum (Matrix a, Matrix b); // Return matrix of sum of elements of both matrices
+        Promise <Matrix> subtract (Matrix a, Matrix b); // Return element-wise subtraction
+        Promise <Matrix> square (Matrix a); // Return element-wise square 
+        Promise <Matrix> sqrt (Matrix a); // Return element square root 
+
+        Promise <Matrix> mean (Matrix a); // Return mean of elements across dimensions
+        Promise <Matrix> min (Matrix a); // Return minimum of elements across dimensions
+        Promise <Matrix> max (Matrix a); // Return maximum of elements acorss dimensions
+
+        Promise <float> selectFloat (Matrix a, optional unsigned long x, optional unsigned long y);
+        Promise <unsigned long> selectLong (Matrix a, optional unsigned long x, optional unsigned long y);
+
+        Promise <String> toJSON (Matrix a);
+    };
+    
+    interface SparseMat : Matrix {
+        // to do 
+    };
+    interface DenseMat : Matrix {}; 
+    interface SparseVec : Matrix {};
+    interface DenseVec : Matrix {};
+</xmp>
+
+
