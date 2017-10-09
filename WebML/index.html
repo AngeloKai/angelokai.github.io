@@ -1478,28 +1478,28 @@ for a wide variety of machine learning operations.</p>
       <li><a href="#mixed-reality"><span class="secno">5.6</span> <span class="content">Mixed Reality Experience</span></a>
      </ol>
     <li>
-     <a href="#bottlenecks"><span class="secno">6</span> <span class="content">Requirements</span></a>
+     <a href="#related-research"><span class="secno">6</span> <span class="content">Related Research</span></a>
      <ol class="toc">
-      <li><a href="##challenges"><span class="secno">6.1</span> <span class="content">Challenges</span></a>
-     </ol>
-    <li><a href="#requirements"><span class="secno">7</span> <span class="content">Requirements</span></a>
-    <li>
-     <a href="#related-research"><span class="secno">8</span> <span class="content">Related Research</span></a>
-     <ol class="toc">
-      <li><a href="#quantization"><span class="secno">8.1</span> <span class="content">Quantization</span></a>
-      <li><a href="#huffman-coding"><span class="secno">8.2</span> <span class="content">Huffman Coding</span></a>
-      <li><a href="#Discretization"><span class="secno">8.3</span> <span class="content">Discretization</span></a>
-      <li><a href="#sparse-matrix"><span class="secno">8.4</span> <span class="content">Sparse Matrix</span></a>
+      <li><a href="#quantization"><span class="secno">6.1</span> <span class="content">Quantization</span></a>
+      <li><a href="#huffman-coding"><span class="secno">6.2</span> <span class="content">Huffman Coding</span></a>
+      <li><a href="#Discretization"><span class="secno">6.3</span> <span class="content">Discretization</span></a>
+      <li><a href="#sparse-matrix"><span class="secno">6.4</span> <span class="content">Sparse Matrix</span></a>
      </ol>
     <li>
-     <a href="#related-standards"><span class="secno">9</span> <span class="content">Existing Standard APIs</span></a>
+     <a href="#related-standards"><span class="secno">7</span> <span class="content">Existing Standard APIs</span></a>
      <ol class="toc">
-      <li><a href="#pretrained-apis"><span class="secno">9.1</span> <span class="content">APIs Built on Pre-Trained Model</span></a>
-      <li><a href="#webgl"><span class="secno">9.2</span> <span class="content">WebGL</span></a>
-      <li><a href="#web-assembly"><span class="secno">9.3</span> <span class="content">Web Assembly</span></a>
-      <li><a href="#web-gpu"><span class="secno">9.4</span> <span class="content">WebGPU</span></a>
+      <li><a href="#pretrained-apis"><span class="secno">7.1</span> <span class="content">APIs Relied on Machine Learning Technologies</span></a>
+      <li><a href="#webgl"><span class="secno">7.2</span> <span class="content">WebGL</span></a>
+      <li><a href="#web-assembly"><span class="secno">7.3</span> <span class="content">Web Assembly</span></a>
+      <li><a href="#web-gpu"><span class="secno">7.4</span> <span class="content">WebGPU</span></a>
      </ol>
-    <li><a href="#strawman"><span class="secno">10</span> <span class="content">Strawman Proposal</span></a>
+    <li>
+     <a href="#bottlenecks"><span class="secno">8</span> <span class="content">Requirements</span></a>
+     <ol class="toc">
+      <li><a href="##challenges"><span class="secno">8.1</span> <span class="content">Challenges</span></a>
+      <li><a href="#requirements"><span class="secno">8.2</span> <span class="content">Requirements</span></a>
+     </ol>
+    <li><a href="#strawman"><span class="secno">9</span> <span class="content">Strawman Proposal</span></a>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
@@ -1669,35 +1669,7 @@ alongside the post, the application can also recommend appropriately based on th
    <h3 class="heading settled" data-level="5.6" id="mixed-reality"><span class="secno">5.6. </span><span class="content">Mixed Reality Experience</span><a class="self-link" href="#mixed-reality"></a></h3>
    <p>A web application built for mixed reality platforms may wish to leverage machine learning to
 anticipate user intention and movement in order to cleverly render content.</p>
-   <h2 class="heading settled" data-level="6" id="bottlenecks"><span class="secno">6. </span><span class="content">Requirements</span><a class="self-link" href="#bottlenecks"></a></h2>
-   <h3 class="heading settled" data-level="6.1" id="#challenges"><span class="secno">6.1. </span><span class="content">Challenges</span><a class="self-link" href="#%23challenges"></a></h3>
-   <p>Performing machine learning inference on the web faces challenges in several areas: file size,
-memory, performance, and power consumtion. First, machine learning models typically have a large 
-file size. The streamlined mobile version of TensorFlow by itself can take around 10 megabytes. 
-A full model would add at least about 10 megabytes. Second, ML programs, 
-especially deep neural networks, often instantiates many matrices 
-throughout the computation cycle and may exceed 
-max memory limit. Third, as illustrated below, the current web platform has poor support for 
-the typical kind of mathmatical computation that machine learning programs use. Finally,
-today if a model were to be run inside a web application, it can suck up significant power.</p>
-   <h2 class="heading settled" data-level="7" id="requirements"><span class="secno">7. </span><span class="content">Requirements</span><a class="self-link" href="#requirements"></a></h2>
-   <p>Therefore the web platform should offer APIs that aim at the below goals:</p>
-   <ol>
-    <li data-md="">
-     <p>Provide APIs that are generic and basic enough to cover large range of machine learning
-algorithms including deep neural networks, decision-trees, etc.</p>
-    <li data-md="">
-     <p>Optimize toward small file size and memory consumption.</p>
-    <li data-md="">
-     <p>Make of use of possible hardware acceleration, such as the use of
-ASICs/GPUs/CPUs/DSPs, and parallelization to maximize performance gain.</p>
-    <li data-md="">
-     <p>Balance between hardware acceleration and the level of abstraction needed for the web platform.</p>
-    <li data-md="">
-     <p>Designed with focus on inference instead of training, such as a easy way to port trained models
-into inference-ready models.</p>
-   </ol>
-   <h2 class="heading settled" data-level="8" id="related-research"><span class="secno">8. </span><span class="content">Related Research</span><a class="self-link" href="#related-research"></a></h2>
+   <h2 class="heading settled" data-level="6" id="related-research"><span class="secno">6. </span><span class="content">Related Research</span><a class="self-link" href="#related-research"></a></h2>
    <p>The design of an appropriate API surface for machine learning inference should incorporate
 learnings from research about optimizing machine learning models to run on devices with 
 low computational power such as IoT devices. The section covers a few sample 
@@ -1705,7 +1677,7 @@ techniques for inspiration purpose: quantization, huffman coding, discretization
 matrix.</p>
    <p>A common theme among the techniques is they are all trade-offs between accuracy and other
 qualities.</p>
-   <h3 class="heading settled" data-level="8.1" id="quantization"><span class="secno">8.1. </span><span class="content">Quantization</span><a class="self-link" href="#quantization"></a></h3>
+   <h3 class="heading settled" data-level="6.1" id="quantization"><span class="secno">6.1. </span><span class="content">Quantization</span><a class="self-link" href="#quantization"></a></h3>
    <p>Quantization refers to a group of techniques ot convert high precision floating point numbers
 typically used in the training phase to low precision compact format numbers. Doing so allows 
 us to reduce the file size and accelerate the computation. This technique is particularly 
@@ -1724,19 +1696,19 @@ many machine learning algorithms are now well-equipped to handle statistical noi
 precision often doesn’t lead to too much decrease in accuracy. Although low precision may not
 matter that much for GPUs, it can matter a lot for DSPs which are usually designed to operate 
 with 8 bit numbers. Nowadays most computers including smartphones come with DSPs.</p>
-   <h3 class="heading settled" data-level="8.2" id="huffman-coding"><span class="secno">8.2. </span><span class="content">Huffman Coding</span><a class="self-link" href="#huffman-coding"></a></h3>
+   <h3 class="heading settled" data-level="6.2" id="huffman-coding"><span class="secno">6.2. </span><span class="content">Huffman Coding</span><a class="self-link" href="#huffman-coding"></a></h3>
    <p>Huffman coding is a commonly used compression alogrithm that uses variable-length codeward to
 encode symbols. Studies suggest Huffman coding can usually shrink network file size by about 
 20% to 30%. The technique can be used after quantization to reduce size.</p>
-   <h3 class="heading settled" data-level="8.3" id="Discretization"><span class="secno">8.3. </span><span class="content">Discretization</span><a class="self-link" href="#Discretization"></a></h3>
+   <h3 class="heading settled" data-level="6.3" id="Discretization"><span class="secno">6.3. </span><span class="content">Discretization</span><a class="self-link" href="#Discretization"></a></h3>
    <p>Discretization is the process to transfer continious functions to to discrete numbers. Some
 may argue quantization is part of discretization. One thing to call out about this technique 
 is that this really helps decrease power consumption.</p>
-   <h3 class="heading settled" data-level="8.4" id="sparse-matrix"><span class="secno">8.4. </span><span class="content">Sparse Matrix</span><a class="self-link" href="#sparse-matrix"></a></h3>
+   <h3 class="heading settled" data-level="6.4" id="sparse-matrix"><span class="secno">6.4. </span><span class="content">Sparse Matrix</span><a class="self-link" href="#sparse-matrix"></a></h3>
    <p>Most machine learning problems don’t involve a densely populated matrix. Adopting sparse matrix
 data structures and specifical numerical methods for those data structures can significantly 
 reduce the size of the memory.</p>
-   <h2 class="heading settled" data-level="9" id="related-standards"><span class="secno">9. </span><span class="content">Existing Standard APIs</span><a class="self-link" href="#related-standards"></a></h2>
+   <h2 class="heading settled" data-level="7" id="related-standards"><span class="secno">7. </span><span class="content">Existing Standard APIs</span><a class="self-link" href="#related-standards"></a></h2>
    <p>Today several standard APIs do exist to help developers make use of machine learning tehcnologies
 in their web applications. For example, the Web Speech API lets developers use speech-to-text 
 bidirectional conversion technology. The WebGL API gives developers a path to 
@@ -1748,7 +1720,7 @@ existing trained networks written in C++ to binaries that can be run on the brow
 in mind and therefore does not provide sufficent support machine learning
 on the platform. Although each of them helps with one subset of the problems, a generic solution
 is needed.</p>
-   <h3 class="heading settled" data-level="9.1" id="pretrained-apis"><span class="secno">9.1. </span><span class="content">APIs Built on Pre-Trained Model</span><a class="self-link" href="#pretrained-apis"></a></h3>
+   <h3 class="heading settled" data-level="7.1" id="pretrained-apis"><span class="secno">7.1. </span><span class="content">APIs Relied on Machine Learning Technologies</span><a class="self-link" href="#pretrained-apis"></a></h3>
    <p>In the past few years, we have added support for a few new APIs that relies on machine learning
 technologies. The <a href="https://dvcs.w3.org/hg/speech-api/raw-file/tip/webspeechapi.html">Web
 Speech API</a> enables developers to easily convert text content to speech and speech content to 
@@ -1764,7 +1736,7 @@ often based on research in machine learning, which in turn furthered research in
 computationaly expensive. Yet it is unscalable to continue adding APIs to the platform for the 
 reason of computational cost. There should be a generic solution that can bring down the 
 computational cost of doing machine learning on the web platform.</p>
-   <h3 class="heading settled" data-level="9.2" id="webgl"><span class="secno">9.2. </span><span class="content">WebGL</span><a class="self-link" href="#webgl"></a></h3>
+   <h3 class="heading settled" data-level="7.2" id="webgl"><span class="secno">7.2. </span><span class="content">WebGL</span><a class="self-link" href="#webgl"></a></h3>
    <p>The WebGL API was designed to render 3D and 2D graphic content and make use of GPUs behind the
 scene when necessary. Given that most of graphic processing relies on matrix computation, 
 web developers have developed libraries that wrap around WebGL to accelerate matrix computation. 
@@ -1781,7 +1753,7 @@ two arrays and three textures).</p>
 one can argue that this goal is not within the charter of an API that is designed for drawing 
 graphics. In addition, the next WebGL (WebGL 3.00 are still far away given that Chrome and Firefox
 has just implemented the support for the 2.0 version earlier this year.</p>
-   <h3 class="heading settled" data-level="9.3" id="web-assembly"><span class="secno">9.3. </span><span class="content">Web Assembly</span><a class="self-link" href="#web-assembly"></a></h3>
+   <h3 class="heading settled" data-level="7.3" id="web-assembly"><span class="secno">7.3. </span><span class="content">Web Assembly</span><a class="self-link" href="#web-assembly"></a></h3>
    <p>WebAssembly is a new low-level assembly-like language with a compact binary format and near-native
 performance. Programs written in C/C++ can be compiled directly to this format to run on the web. 
 On the browsers, WebAssembly programs run in a sandbox that can be used alongside JavaScript.</p>
@@ -1799,7 +1771,7 @@ doing ML computation on the client. Common matrix functions can be large in size
 Because WebAssembly is running on a blank slate, the developers have to load related libraries 
 by themselves. If the libraries are built into the platform, much less speed requirement is needed. 
 For example, developers would have to define their own matrix/format data type.</p>
-   <h3 class="heading settled" data-level="9.4" id="web-gpu"><span class="secno">9.4. </span><span class="content">WebGPU</span><a class="self-link" href="#web-gpu"></a></h3>
+   <h3 class="heading settled" data-level="7.4" id="web-gpu"><span class="secno">7.4. </span><span class="content">WebGPU</span><a class="self-link" href="#web-gpu"></a></h3>
    <p>WebGPU API is a new incubating API that aims at exposing modern GPU features. Its initial API set
 is a derivation from the Metal language. Prototype for the API has landed in WebKit.</p>
    <p>Although the API aims at exposing low-level GPU functionalities, its <a href="https://webkit.org/wp-content/uploads/webgpu-api-proposal.html">initial API set is 
@@ -1811,7 +1783,35 @@ efficient technique to reduce the size of programs. Companies have produced chip
 for machine learning for personal devices instead of using GPUs, such as <a href="https://www.movidius.com/technology">Movidius' (an Intel company) Myriad VPU</a>, the <a href="https://www.ibm.com/blogs/research/2016/09/deep-learning-possible-embedded-systems-thanks-truenorth/"> IBM’s TrueNorth chips</a>, or <a href="https://www.intelnervana.com/technology/">Intel’s 
 Nervana</a>If the aim of the WebGPU API is to expose interface for the modern GPU, 
 it would not be suitable for the machine learning field.</p>
-   <h2 class="heading settled" data-level="10" id="strawman"><span class="secno">10. </span><span class="content">Strawman Proposal</span><a class="self-link" href="#strawman"></a></h2>
+   <h2 class="heading settled" data-level="8" id="bottlenecks"><span class="secno">8. </span><span class="content">Requirements</span><a class="self-link" href="#bottlenecks"></a></h2>
+   <h3 class="heading settled" data-level="8.1" id="#challenges"><span class="secno">8.1. </span><span class="content">Challenges</span><a class="self-link" href="#%23challenges"></a></h3>
+   <p>Performing machine learning inference on the web faces challenges in several areas: file size,
+memory, performance, and power consumtion. First, machine learning models typically have a large 
+file size. The streamlined mobile version of TensorFlow by itself can take around 10 megabytes. 
+A full model would add at least about 10 megabytes. Second, ML programs, 
+especially deep neural networks, often instantiates many matrices 
+throughout the computation cycle and may exceed 
+max memory limit. Third, as illustrated below, the current web platform has poor support for 
+the typical kind of mathmatical computation that machine learning programs use. Finally,
+today if a model were to be run inside a web application, it can suck up significant power.</p>
+   <h3 class="heading settled" data-level="8.2" id="requirements"><span class="secno">8.2. </span><span class="content">Requirements</span><a class="self-link" href="#requirements"></a></h3>
+   <p>Therefore the web platform should offer APIs that aim at the below goals:</p>
+   <ol>
+    <li data-md="">
+     <p>Provide APIs that are generic and basic enough to cover large range of machine learning
+algorithms including deep neural networks, decision-trees, etc.</p>
+    <li data-md="">
+     <p>Optimize toward small file size and memory consumption.</p>
+    <li data-md="">
+     <p>Make of use of possible hardware acceleration, such as the use of
+ASICs/GPUs/CPUs/DSPs, and parallelization to maximize performance gain.</p>
+    <li data-md="">
+     <p>Balance between hardware acceleration and the level of abstraction needed for the web platform.</p>
+    <li data-md="">
+     <p>Designed with focus on inference instead of training, such as a easy way to port trained models
+into inference-ready models.</p>
+   </ol>
+   <h2 class="heading settled" data-level="9" id="strawman"><span class="secno">9. </span><span class="content">Strawman Proposal</span><a class="self-link" href="#strawman"></a></h2>
    <p>The section includes a strawman proposal of API surface as the beginning point of the
 conversation.</p>
 <pre class="idl highlight def">[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed">Exposed</a>=<span class="n">Windows</span>, <a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext" id="ref-for-SecureContext">SecureContext</a>]
@@ -2001,46 +2001,46 @@ conversation.</p>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
-   <li><a href="#dom-matrix-bitsize">bitSize</a><span>, in §10</span>
+   <li><a href="#dom-matrix-bitsize">bitSize</a><span>, in §9</span>
    <li><a href="#deep-neural-networks">deep neural networks</a><span>, in §3</span>
-   <li><a href="#densemat">DenseMat</a><span>, in §10</span>
-   <li><a href="#densevec">DenseVec</a><span>, in §10</span>
-   <li><a href="#dom-matrix-div">div(a, b)</a><span>, in §10</span>
+   <li><a href="#densemat">DenseMat</a><span>, in §9</span>
+   <li><a href="#densevec">DenseVec</a><span>, in §9</span>
+   <li><a href="#dom-matrix-div">div(a, b)</a><span>, in §9</span>
    <li><a href="#dnns">DNNs</a><span>, in §3</span>
-   <li><a href="#dom-matrix-fromarray">fromArray(buf)</a><span>, in §10</span>
-   <li><a href="#dom-matrix-fromjson">fromJSON(str)</a><span>, in §10</span>
-   <li><a href="#dom-matrix-height">height</a><span>, in §10</span>
+   <li><a href="#dom-matrix-fromarray">fromArray(buf)</a><span>, in §9</span>
+   <li><a href="#dom-matrix-fromjson">fromJSON(str)</a><span>, in §9</span>
+   <li><a href="#dom-matrix-height">height</a><span>, in §9</span>
    <li><a href="#incremental-learning">incremental learning</a><span>, in §3</span>
    <li><a href="#infer">infer</a><span>, in §3</span>
    <li><a href="#inference">inference</a><span>, in §3</span>
-   <li><a href="#dom-matrix-istransposed">isTransposed</a><span>, in §10</span>
-   <li><a href="#dom-matrix-isvector">isVector</a><span>, in §10</span>
+   <li><a href="#dom-matrix-istransposed">isTransposed</a><span>, in §9</span>
+   <li><a href="#dom-matrix-isvector">isVector</a><span>, in §9</span>
    <li><a href="#machine-learning">machine learning</a><span>, in §3</span>
-   <li><a href="#matrix">Matrix</a><span>, in §10</span>
-   <li><a href="#dom-matrix-max">max(a)</a><span>, in §10</span>
-   <li><a href="#dom-matrix-mean">mean(a)</a><span>, in §10</span>
-   <li><a href="#dom-matrix-min">min(a)</a><span>, in §10</span>
-   <li><a href="#dom-matrix-mod">mod(a, b)</a><span>, in §10</span>
-   <li><a href="#dom-matrix-multiply">multiply(a, b)</a><span>, in §10</span>
+   <li><a href="#matrix">Matrix</a><span>, in §9</span>
+   <li><a href="#dom-matrix-max">max(a)</a><span>, in §9</span>
+   <li><a href="#dom-matrix-mean">mean(a)</a><span>, in §9</span>
+   <li><a href="#dom-matrix-min">min(a)</a><span>, in §9</span>
+   <li><a href="#dom-matrix-mod">mod(a, b)</a><span>, in §9</span>
+   <li><a href="#dom-matrix-multiply">multiply(a, b)</a><span>, in §9</span>
    <li><a href="#neural-networks">neural networks</a><span>, in §3</span>
-   <li><a href="#dom-matrix-rawmatrix">rawMatrix</a><span>, in §10</span>
-   <li><a href="#dom-matrix-selectfloat">selectFloat(a)</a><span>, in §10</span>
-   <li><a href="#dom-matrix-selectfloat">selectFloat(a, x)</a><span>, in §10</span>
-   <li><a href="#dom-matrix-selectfloat">selectFloat(a, x, y)</a><span>, in §10</span>
-   <li><a href="#dom-matrix-selectlong">selectLong(a)</a><span>, in §10</span>
-   <li><a href="#dom-matrix-selectlong">selectLong(a, x)</a><span>, in §10</span>
-   <li><a href="#dom-matrix-selectlong">selectLong(a, x, y)</a><span>, in §10</span>
-   <li><a href="#sparsemat">SparseMat</a><span>, in §10</span>
-   <li><a href="#sparsevec">SparseVec</a><span>, in §10</span>
-   <li><a href="#dom-matrix-sqrt">sqrt(a)</a><span>, in §10</span>
-   <li><a href="#dom-matrix-square">square(a)</a><span>, in §10</span>
-   <li><a href="#dom-matrix-subtract">subtract(a, b)</a><span>, in §10</span>
-   <li><a href="#dom-matrix-sum">sum(a, b)</a><span>, in §10</span>
-   <li><a href="#dom-matrix-tojson">toJSON(a)</a><span>, in §10</span>
+   <li><a href="#dom-matrix-rawmatrix">rawMatrix</a><span>, in §9</span>
+   <li><a href="#dom-matrix-selectfloat">selectFloat(a)</a><span>, in §9</span>
+   <li><a href="#dom-matrix-selectfloat">selectFloat(a, x)</a><span>, in §9</span>
+   <li><a href="#dom-matrix-selectfloat">selectFloat(a, x, y)</a><span>, in §9</span>
+   <li><a href="#dom-matrix-selectlong">selectLong(a)</a><span>, in §9</span>
+   <li><a href="#dom-matrix-selectlong">selectLong(a, x)</a><span>, in §9</span>
+   <li><a href="#dom-matrix-selectlong">selectLong(a, x, y)</a><span>, in §9</span>
+   <li><a href="#sparsemat">SparseMat</a><span>, in §9</span>
+   <li><a href="#sparsevec">SparseVec</a><span>, in §9</span>
+   <li><a href="#dom-matrix-sqrt">sqrt(a)</a><span>, in §9</span>
+   <li><a href="#dom-matrix-square">square(a)</a><span>, in §9</span>
+   <li><a href="#dom-matrix-subtract">subtract(a, b)</a><span>, in §9</span>
+   <li><a href="#dom-matrix-sum">sum(a, b)</a><span>, in §9</span>
+   <li><a href="#dom-matrix-tojson">toJSON(a)</a><span>, in §9</span>
    <li><a href="#train">train</a><span>, in §3</span>
    <li><a href="#training">training</a><span>, in §3</span>
    <li><a href="#transfer-learning">transfer learning</a><span>, in §3</span>
-   <li><a href="#dom-matrix-width">width</a><span>, in §10</span>
+   <li><a href="#dom-matrix-width">width</a><span>, in §9</span>
   </ul>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
@@ -2105,7 +2105,7 @@ conversation.</p>
   <aside class="dfn-panel" data-for="matrix">
    <b><a href="#matrix">#matrix</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-matrix">10. Strawman Proposal</a> <a href="#ref-for-matrix①">(2)</a> <a href="#ref-for-matrix②">(3)</a> <a href="#ref-for-matrix③">(4)</a> <a href="#ref-for-matrix④">(5)</a> <a href="#ref-for-matrix⑤">(6)</a> <a href="#ref-for-matrix⑥">(7)</a> <a href="#ref-for-matrix⑦">(8)</a> <a href="#ref-for-matrix⑧">(9)</a> <a href="#ref-for-matrix⑨">(10)</a> <a href="#ref-for-matrix①⓪">(11)</a> <a href="#ref-for-matrix①①">(12)</a> <a href="#ref-for-matrix①②">(13)</a> <a href="#ref-for-matrix①③">(14)</a> <a href="#ref-for-matrix①④">(15)</a> <a href="#ref-for-matrix①⑤">(16)</a> <a href="#ref-for-matrix①⑥">(17)</a> <a href="#ref-for-matrix①⑦">(18)</a> <a href="#ref-for-matrix①⑧">(19)</a> <a href="#ref-for-matrix①⑨">(20)</a> <a href="#ref-for-matrix②⓪">(21)</a> <a href="#ref-for-matrix②①">(22)</a> <a href="#ref-for-matrix②②">(23)</a> <a href="#ref-for-matrix②③">(24)</a> <a href="#ref-for-matrix②④">(25)</a> <a href="#ref-for-matrix②⑤">(26)</a> <a href="#ref-for-matrix②⑥">(27)</a> <a href="#ref-for-matrix②⑦">(28)</a> <a href="#ref-for-matrix②⑧">(29)</a> <a href="#ref-for-matrix②⑨">(30)</a> <a href="#ref-for-matrix③⓪">(31)</a> <a href="#ref-for-matrix③①">(32)</a> <a href="#ref-for-matrix③②">(33)</a> <a href="#ref-for-matrix③③">(34)</a>
+    <li><a href="#ref-for-matrix">9. Strawman Proposal</a> <a href="#ref-for-matrix①">(2)</a> <a href="#ref-for-matrix②">(3)</a> <a href="#ref-for-matrix③">(4)</a> <a href="#ref-for-matrix④">(5)</a> <a href="#ref-for-matrix⑤">(6)</a> <a href="#ref-for-matrix⑥">(7)</a> <a href="#ref-for-matrix⑦">(8)</a> <a href="#ref-for-matrix⑧">(9)</a> <a href="#ref-for-matrix⑨">(10)</a> <a href="#ref-for-matrix①⓪">(11)</a> <a href="#ref-for-matrix①①">(12)</a> <a href="#ref-for-matrix①②">(13)</a> <a href="#ref-for-matrix①③">(14)</a> <a href="#ref-for-matrix①④">(15)</a> <a href="#ref-for-matrix①⑤">(16)</a> <a href="#ref-for-matrix①⑥">(17)</a> <a href="#ref-for-matrix①⑦">(18)</a> <a href="#ref-for-matrix①⑧">(19)</a> <a href="#ref-for-matrix①⑨">(20)</a> <a href="#ref-for-matrix②⓪">(21)</a> <a href="#ref-for-matrix②①">(22)</a> <a href="#ref-for-matrix②②">(23)</a> <a href="#ref-for-matrix②③">(24)</a> <a href="#ref-for-matrix②④">(25)</a> <a href="#ref-for-matrix②⑤">(26)</a> <a href="#ref-for-matrix②⑥">(27)</a> <a href="#ref-for-matrix②⑦">(28)</a> <a href="#ref-for-matrix②⑧">(29)</a> <a href="#ref-for-matrix②⑨">(30)</a> <a href="#ref-for-matrix③⓪">(31)</a> <a href="#ref-for-matrix③①">(32)</a> <a href="#ref-for-matrix③②">(33)</a> <a href="#ref-for-matrix③③">(34)</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */

@@ -213,33 +213,6 @@ alongside the post, the application can also recommend appropriately based on th
 A web application built for mixed reality platforms may wish to leverage machine learning to 
 anticipate user intention and movement in order to cleverly render content.
 
-# Requirements # {#bottlenecks}
-
-## Challenges ## {##challenges}
-
-Performing machine learning inference on the web faces challenges in several areas: file size, 
-memory, performance, and power consumtion. First, machine learning models typically have a large 
-file size. The streamlined mobile version of TensorFlow by itself can take around 10 megabytes. 
-A full model would add at least about 10 megabytes. Second, ML programs, 
-especially deep neural networks, often instantiates many matrices 
-throughout the computation cycle and may exceed 
-max memory limit. Third, as illustrated below, the current web platform has poor support for 
-the typical kind of mathmatical computation that machine learning programs use. Finally,
-today if a model were to be run inside a web application, it can suck up significant power. 
-
-# Requirements # {#requirements}
-
-Therefore the web platform should offer APIs that aim at the below goals:
-
-1. Provide APIs that are generic and basic enough to cover large range of machine learning 
-    algorithms including deep neural networks, decision-trees, etc.
-1. Optimize toward small file size and memory consumption. 
-1. Make of use of possible hardware acceleration, such as the use of
-    ASICs/GPUs/CPUs/DSPs, and parallelization to maximize performance gain. 
-1. Balance between hardware acceleration and the level of abstraction needed for the web platform. 
-1. Designed with focus on inference instead of training, such as a easy way to port trained models
-    into inference-ready models.
-
 # Related Research # {#related-research}
 
 The design of an appropriate API surface for machine learning inference should incorporate 
@@ -309,7 +282,7 @@ in mind and therefore does not provide sufficent support machine learning
 on the platform. Although each of them helps with one subset of the problems, a generic solution
 is needed. 
 
-## APIs Built on Pre-Trained Model ## {#pretrained-apis}
+## APIs Relied on Machine Learning Technologies ## {#pretrained-apis}
 
 In the past few years, we have added support for a few new APIs that relies on machine learning 
 technologies. The <a href="https://dvcs.w3.org/hg/speech-api/raw-file/tip/webspeechapi.html">Web
@@ -391,6 +364,33 @@ for machine learning for personal devices instead of using GPUs, such as
 IBM's TrueNorth chips</a>, or <a href="https://www.intelnervana.com/technology/">Intel's 
 Nervana</a>If the aim of the WebGPU API is to expose interface for the modern GPU, 
 it would not be suitable for the machine learning field. 
+
+# Requirements # {#bottlenecks}
+
+## Challenges ## {##challenges}
+
+Performing machine learning inference on the web faces challenges in several areas: file size, 
+memory, performance, and power consumtion. First, machine learning models typically have a large 
+file size. The streamlined mobile version of TensorFlow by itself can take around 10 megabytes. 
+A full model would add at least about 10 megabytes. Second, ML programs, 
+especially deep neural networks, often instantiates many matrices 
+throughout the computation cycle and may exceed 
+max memory limit. Third, as illustrated below, the current web platform has poor support for 
+the typical kind of mathmatical computation that machine learning programs use. Finally,
+today if a model were to be run inside a web application, it can suck up significant power. 
+
+## Requirements ## {#requirements}
+
+Therefore the web platform should offer APIs that aim at the below goals:
+
+1. Provide APIs that are generic and basic enough to cover large range of machine learning 
+    algorithms including deep neural networks, decision-trees, etc.
+1. Optimize toward small file size and memory consumption. 
+1. Make of use of possible hardware acceleration, such as the use of
+    ASICs/GPUs/CPUs/DSPs, and parallelization to maximize performance gain. 
+1. Balance between hardware acceleration and the level of abstraction needed for the web platform. 
+1. Designed with focus on inference instead of training, such as a easy way to port trained models
+    into inference-ready models.
 
 # Strawman Proposal # {#strawman}
 
