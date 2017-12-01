@@ -2200,7 +2200,7 @@ authentication signatures, the AT flag MUST NOT be set and the <code><a data-lin
 extension data is included.</p>
    <p>The <a href="#fig-authData">figure below</a> shows a visual representation of the <a data-link-type="dfn" href="#authenticator-data" id="ref-for-authenticator-data①②">authenticator data</a> structure.</p>
    <figure id="fig-authData">
-     <img src="images/fido-signature-formats-figure1.svg"> 
+     <img alt="Authenticator data layout" src="images/fido-signature-formats-figure1.svg"> 
     <figcaption><a data-link-type="dfn" href="#authenticator-data" id="ref-for-authenticator-data①③">Authenticator data</a> layout.</figcaption>
    </figure>
    <p>Note that the <a data-link-type="dfn" href="#authenticator-data" id="ref-for-authenticator-data①④">authenticator data</a> describes its own length: If the AT and ED <a data-link-type="dfn" href="#flags" id="ref-for-flags②">flags</a> are not set, it is always 37 bytes long.
@@ -2406,7 +2406,7 @@ undelimited
 concatenation is safe to use here because the <a data-link-type="dfn" href="#authenticator-data" id="ref-for-authenticator-data①⑧">authenticator data</a> describes its own length. The <a data-link-type="dfn" href="#collectedclientdata-hash-of-the-serialized-client-data" id="ref-for-collectedclientdata-hash-of-the-serialized-client-data①⓪">hash of the serialized
 client data</a> (which potentially has a variable length) is always the last element.</p>
      <figure id="fig-signature">
-       <img src="images/fido-signature-formats-figure2.svg"> 
+       <img alt="Generating an assertion signature" src="images/fido-signature-formats-figure2.svg"> 
       <figcaption>Generating an <a data-link-type="dfn" href="#assertion-signature" id="ref-for-assertion-signature③">assertion signature</a>.</figcaption>
      </figure>
     <li data-md="">
@@ -2444,7 +2444,7 @@ enabling the <a data-link-type="dfn" href="#relying-party" id="ref-for-relying-p
 MUST perform <a data-link-type="dfn" href="#self-attestation" id="ref-for-self-attestation⑤">self attestation</a> of the <a data-link-type="dfn" href="#credential-public-key" id="ref-for-credential-public-key①①">credential public key</a> with the corresponding <a data-link-type="dfn" href="#credential-private-key" id="ref-for-credential-private-key①⓪">credential private key</a>. All this
 information is returned by <a data-link-type="dfn" href="#authenticator" id="ref-for-authenticator⑥⑤">authenticators</a> any time a new <a data-link-type="dfn" href="#public-key-credential" id="ref-for-public-key-credential③⑦">public key credential</a> is generated, in the overall form of an <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="attestation-object">attestation object</dfn>. The relationship of the <a data-link-type="dfn" href="#attestation-object" id="ref-for-attestation-object①⓪">attestation object</a> with <a data-link-type="dfn" href="#authenticator-data" id="ref-for-authenticator-data①⑨">authenticator data</a> (containing <a data-link-type="dfn" href="#attested-credential-data" id="ref-for-attested-credential-data⑦">attested credential data</a>) and the <a data-link-type="dfn" href="#attestation-statement" id="ref-for-attestation-statement①⑦">attestation statement</a> is illustrated in <a href="#fig-attStructs">figure 3</a>, below.</p>
    <figure id="fig-attStructs">
-     <img src="images/fido-attestation-structures.svg"> 
+     <img alt="Attestation object layout illustrating the included authenticator data (containing attested credential data) and the attestation statement." src="images/fido-attestation-structures.svg"> 
     <figcaption><a data-link-type="dfn" href="#attestation-object" id="ref-for-attestation-object①①">Attestation object</a> layout illustrating the included <a data-link-type="dfn" href="#authenticator-data" id="ref-for-authenticator-data②⓪">authenticator data</a> (containing <a data-link-type="dfn" href="#attested-credential-data" id="ref-for-attested-credential-data⑧">attested credential
     data</a>) and the <a data-link-type="dfn" href="#attestation-statement" id="ref-for-attestation-statement①⑧">attestation statement</a>.</figcaption>
     <div class="note" role="note"> This figure illustrates only the <code>packed</code> <a data-link-type="dfn" href="#attestation-statement-format" id="ref-for-attestation-statement-format③">attestation statement format</a>. Several additional <a data-link-type="dfn" href="#attestation-statement-format" id="ref-for-attestation-statement-format④">attestation statement
