@@ -1247,7 +1247,7 @@ details.</p>
            <li data-md="">
             <p>If <code><var>credentialCreationData</var>.<a data-link-type="dfn" href="#credentialcreationdata-attestationconveyancepreferenceoption" id="ref-for-credentialcreationdata-attestationconveyancepreferenceoption">attestationConveyancePreferenceOption</a></code>’s value is</p>
             <dl class="switch">
-             <dl>
+             <!-- <dl> -->
               <dt data-md="">"none"
               <dd data-md="">
                <p>Replace potentially uniquely identifying information with non-identifying versions of the
@@ -1271,7 +1271,7 @@ and/or more easily verifiable version of the same data (for example, by employin
               <dt data-md="">"direct"
               <dd data-md="">
                <p>Convey the <a data-link-type="dfn" href="#authenticator" id="ref-for-authenticator③⑥">authenticator</a>'s <a data-link-type="dfn" href="#aaguid" id="ref-for-aaguid④">AAGUID</a> and <a data-link-type="dfn" href="#attestation-statement" id="ref-for-attestation-statement③">attestation statement</a>, unaltered, to the RP.</p>
-             </dl>
+             <!-- </dl> -->
              <p class="issue" id="issue-73d6f217"><a class="self-link" href="#issue-73d6f217"></a> @balfanz wishes to add to the "direct" case:
         If the <a data-link-type="dfn" href="#authenticator" id="ref-for-authenticator③⑦">authenticator</a> violates the privacy requirements of the <a data-link-type="dfn" href="#attestation-type" id="ref-for-attestation-type">attestation type</a> it is using, 
         the client SHOULD terminate this algorithm with an "AttestationNotPrivateError".</p>
